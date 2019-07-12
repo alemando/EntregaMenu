@@ -1,3 +1,3 @@
-java -jar C:\Users\alema\Desktop\proyecto\ejecutar.jar
+java -jar ejecutar.jar
 @echo off
 pause
