@@ -1,9 +1,11 @@
 package gestorAplicacion.users;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import BaseDatos.Data;
 import uiMain.MenuDeConsola;
+import uiMain.OpcionDeMenu;
 import uiMain.Main;
 
 public class User {
@@ -15,15 +17,21 @@ public class User {
 	private MenuDeConsola menu;
 	
 	
-	protected User() {
+	public User() {
+	}
+	
+	protected User(String username, MenuDeConsola menu) {
+		this.username = username;
+		this.menu = menu;
+		Data.users.put(username, this);
 	}
 
-	protected User(String name, String username, String email, String password, MenuDeConsola menu) {
+	public User(String name, String username, String email, String password) {
 		this.name = name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.menu = menu;
+		Data.users.put(username, this);
 	}
 	
 	public String getName() {
@@ -66,18 +74,19 @@ public class User {
 		this.menu = menu;
 	}
 	
-	public static String newUser(String name, String username, String email, String password, MenuDeConsola menu){
+	public static String newUser(String name, String username, String email, String password){
 		User user = new User();
 		//Validaciones de cada parametro
 		user.setName(name);
 		user.setUsername(username);
 		user.setEmail(email);
 		user.setPassword(password);
-		user.setMenu(menu);
 		
+		//Menu por defecto al crear un nuevo usuario
+		String [] operations = {"5"};
+		MenuDeConsola.newMenu(user, operations);
 		if(true){
 			Data.users.put(username,user);
-			Data.escribirUsuarios(user);
 			return "Ha sido creado";
 		}else{
 			return "No ha sido creado...";
@@ -116,7 +125,7 @@ public class User {
             if(u.getUsername().equals(username) && u.getPassword().equals(password)){
             	//Seteo el usuario
             	Main.user = u;
-                return "Bienvenido";
+                return "Bienvenido "+u.getName();
             }
         }
         return "Usuario no encontrado";
